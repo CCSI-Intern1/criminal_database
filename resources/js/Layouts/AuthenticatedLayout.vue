@@ -37,6 +37,7 @@ const showingNavigationDropdown = ref(false);
                                     :href="route('dashboard')"
                                     :active="route().current('dashboard')"
                                 >
+                                    <!-- Comprehensive Credit Services -->
                                     Dashboard
                                 </NavLink>
                             </div>

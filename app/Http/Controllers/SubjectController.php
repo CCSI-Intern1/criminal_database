@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class SubjectController extends Controller
 {
     public function index()
     {
-        $subjects = Subject::all();
+        $subjects = Subject::with('user')->where('user_id', Auth::id())->get();
         return Inertia::render('Subjects', [
             'subjects' => $subjects,
         ]);
@@ -24,9 +25,15 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
+            'birth_date' => 'required|date',
+            'case_status' => 'required|string|max:255',
+            'case' => 'required|string|max:255',
+            'court' => 'required|string|max:255',
+            'additional_info' => 'nullable|string',
         ]);
 
         Subject::create($validated);
@@ -53,6 +60,11 @@ class SubjectController extends Controller
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
+            'birth_date' => 'required|date',
+            'case_status' => 'required|string|max:255',
+            'case' => 'required|string|max:255',
+            'court' => 'required|string|max:255',
+            'additional_info' => 'nullable|string',
         ]);
 
         $subject->update($validated);

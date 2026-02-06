@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import AuthLayoutSample from '@/Layouts/AuthLayoutSample.vue';
 import { Head, router } from '@inertiajs/vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SubjectModal from '@/Components/SubjectModal.vue';
@@ -33,10 +34,14 @@ const deleteSubject = (id) => {
 };
 </script>
 
+<style>
+
+</style>
+
 <template>
     <Head title="Subjects" />
 
-    <AuthenticatedLayout>
+    <AuthLayoutSample>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800"
@@ -46,7 +51,7 @@ const deleteSubject = (id) => {
         </template>
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div class="mb-6">
+                <div class="mb-6 forms">
                     <PrimaryButton @click="openModal">
                         Create New Subject
                     </PrimaryButton>
@@ -58,17 +63,21 @@ const deleteSubject = (id) => {
                         <table class="w-full">
                             <thead class="bg-gray-100 border-b">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">First Name</th>
-                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Middle Name</th>
-                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Last Name</th>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Full Name</th>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Birth Date</th>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Case</th>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Case Status</th>
+                                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Court</th>
                                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="subject in subjects" :key="subject.id" class="border-b hover:bg-gray-50">
-                                    <td class="px-6 py-4 text-sm text-gray-900">{{ subject.first_name }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-900">{{ subject.middle_name || '-' }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-900">{{ subject.last_name }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900">{{ subject.first_name }} {{ subject.middle_name || '-' }} {{ subject.last_name }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900">{{ subject.birth_date }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900">{{ subject.case}}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900">{{ subject.case_status }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-900">{{ subject.court }}</td>
                                     <td class="px-6 py-4 text-sm space-x-2">
                                         <a :href="route('subjects.edit', subject.id)" class="text-blue-600 hover:text-blue-900">Edit</a>
                                         <button @click="deleteSubject(subject.id)" class="text-red-600 hover:text-red-900">Delete</button>
@@ -84,5 +93,5 @@ const deleteSubject = (id) => {
             </div>
         </div>
         <SubjectModal :show="showModal" @close="closeModal" />
-    </AuthenticatedLayout>
+    </AuthLayoutSample>
 </template>

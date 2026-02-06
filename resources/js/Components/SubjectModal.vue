@@ -1,8 +1,9 @@
 <script setup>
-import { useForm, router } from '@inertiajs/vue3';
+import { useForm, router, usePage } from '@inertiajs/vue3';
 import Modal from '@/Components/Modal.vue';
 import TextInput from '@/Components/TextInput.vue';
 import InputLabel from '@/Components/InputLabel.vue';
+import SelectInput from '@/Components/SelectInput.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 
 const props = defineProps({
@@ -12,12 +13,30 @@ const props = defineProps({
     },
 });
 
+const case_status_options = [
+    { value: 'Open', label: 'Open' },
+    { value: 'Under Investigation', label: 'Under Investigation' },
+    { value: 'Closed', label: 'Closed' },
+    { value: 'Dismissed', label: 'Dismissed' },
+    { value: 'Pending', label: 'Pending' },
+    { value: 'Reopened', label: 'Reopened' },
+    { value: 'Archived', label: 'Archived' },
+];
+
 const emit = defineEmits(['close']);
 
+const page = usePage();
+
 const form = useForm({
+    user_id: page.props.auth.user.id,
     first_name: '',
     middle_name: '',
     last_name: '',
+    birth_date: '',
+    case_status: '',
+    case: '',
+    court: '',
+    additional_info: '',
 });
 
 const submitForm = () => {
@@ -73,6 +92,59 @@ const closeModal = () => {
                         type="text"
                         class="mt-1 block w-full"
                         required
+                    />
+                </div>
+
+                <div>
+                    <InputLabel for="birth_date" value="Birth Date" />
+                    <TextInput
+                        id="birth_date"
+                        v-model="form.birth_date"
+                        type="date"
+                        class="mt-1 block w-full"
+                        required
+                    />
+                </div>
+
+                <div>
+                    <InputLabel for="case_status" value="Case Status" />
+                    <SelectInput
+                        :key="show"
+                        v-model="form.case_status"
+                        :options="case_status_options"
+                        placeholder="Select case status"
+                    />
+                </div>
+
+                <div>
+                    <InputLabel for="case" value="Case" />
+                    <TextInput
+                        id="case"
+                        v-model="form.case"
+                        type="text"
+                        class="mt-1 block w-full"
+                        required
+                    />
+                </div>
+
+                <div>
+                    <InputLabel for="court" value="Court" />
+                    <TextInput
+                        id="court"
+                        v-model="form.court"
+                        type="text"
+                        class="mt-1 block w-full"
+                        required
+                    />
+                </div>
+
+                <div>
+                    <InputLabel for="additional_info" value="Additional Info" />
+                    <TextInput
+                        id="additional_info"
+                        v-model="form.additional_info"
+                        type="text"
+                        class="mt-1 block w-full"
                     />
                 </div>
 

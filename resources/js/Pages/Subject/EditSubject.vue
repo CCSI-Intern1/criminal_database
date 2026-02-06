@@ -5,6 +5,8 @@ import { Head } from '@inertiajs/vue3';
 import TextInput from '@/Components/TextInput.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import SelectInput from '@/Components/SelectInput.vue';
+import InputError from '@/Components/InputError.vue';
 
 const props = defineProps({
     subject: {
@@ -13,13 +15,34 @@ const props = defineProps({
     },
 });
 
+const case_status_options = [
+    { value: 'Open', label: 'Open' },
+    { value: 'Under Investigation', label: 'Under Investigation' },
+    { value: 'Closed', label: 'Closed' },
+    { value: 'Dismissed', label: 'Dismissed' },
+    { value: 'Pending', label: 'Pending' },
+    { value: 'Reopened', label: 'Reopened' },
+    { value: 'Archived', label: 'Archived' },
+];
+
+
+
 const form = useForm({
     first_name: props.subject.first_name,
     middle_name: props.subject.middle_name,
     last_name: props.subject.last_name,
+    case_status: props.subject.case_status,
+    case: props.subject.case,
+    court: props.subject.court,
+    birth_date: props.subject.birth_date,
+    additional_info: props.subject.additional_info,
 });
 
 const submitForm = () => {
+    if (!form.case_status || form.case_status === '') {
+        form.errors.case_status = 'Case status is required';
+        return;
+    }
     form.put(route('subjects.update', props.subject.id), {
         onSuccess: () => {
             router.visit(route('subjects.index'));
@@ -87,6 +110,61 @@ const cancelEdit = () => {
                             />
                             <div v-if="form.errors.last_name" class="mt-2 text-sm text-red-600">
                                 {{ form.errors.last_name }}
+                            </div>
+                        </div>
+
+                        <div>
+                            <InputLabel for="birth_date" value="Birth Date" />
+                            <TextInput
+                                id="birth_date"
+                                v-model="form.birth_date"
+                                type="date"
+                                class="mt-1 block w-full"
+                                required
+                            />
+                            <div v-if="form.errors.birth_date" class="mt-2 text-sm text-red-600">
+                                {{ form.errors.birth_date }}
+                            </div>
+                        </div>
+
+                        <div>
+                            <InputLabel for="case_status" value="Case Status" />
+                            <SelectInput
+                                id="case_status"
+                                v-model="form.case_status"
+                                :options="case_status_options"
+                                class="mt-1 block w-full"
+                                required
+                            >
+                            </SelectInput>
+                            <div v-if="form.errors.case_status" class="mt-2 text-sm text-red-600">
+                                {{ form.errors.case_status }}
+                            </div>
+                        </div>
+
+                        <div>
+                            <InputLabel for="case" value="Case Details" />
+                            <TextInput
+                                id="case"
+                                v-model="form.case"
+                                type="text"
+                                class="mt-1 block w-full"
+                            />
+                            <div v-if="form.errors.case" class="mt-2 text-sm text-red-600">
+                                {{ form.errors.case }}
+                            </div>
+                        </div>
+
+                        <div>
+                            <InputLabel for="court" value="Court" />
+                            <TextInput
+                                id="court"
+                                v-model="form.court"
+                                type="text"
+                                class="mt-1 block w-full"
+                            />
+                            <div v-if="form.errors.court" class="mt-2 text-sm text-red-600">
+                                {{ form.errors.court }}
                             </div>
                         </div>
 

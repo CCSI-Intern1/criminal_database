@@ -1,5 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import AuthLayoutSample from '@/Layouts/AuthLayoutSample.vue';
 import { Head } from '@inertiajs/vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
@@ -12,7 +13,7 @@ import { ref } from "vue";
 <template>
     <Head title="Dashboard" />
 
-    <AuthenticatedLayout>
+    <AuthLayoutSample>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800"
@@ -32,5 +33,5 @@ import { ref } from "vue";
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </AuthLayoutSample>
 </template>
